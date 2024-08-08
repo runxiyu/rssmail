@@ -59,10 +59,9 @@ func main() {
 		case 0:
 			break
 		case 1:
-			msg := fmt.Sprintf("To: %s\r\nSubject: %s\r\nFrom: %s\r\n\r\nLink: %s\nTime: %s\n\n%s", to_address, title, from_address, link, t, text)
-			fmt.Printf("sending %s\n", t)
+			msg := fmt.Sprintf("To: %s\r\nSubject: %s %s\r\nFrom: %s\r\n\r\nLink: %s\nTime: %s\n\n%s", to_address, t, title, from_address, link, t, text)
+			fmt.Printf("%s\n\n\n\n", msg)
 			cmd := exec.Command("/sbin/sendmail", "-i", "--", to_address)
-			// cmd := exec.Command("msmtp", "-v", "-a", "runxiyu", "-i", "--", to_address)
 			stdin, err := cmd.StdinPipe()
 			p(err)
 			io.WriteString(stdin, msg)
@@ -70,6 +69,7 @@ func main() {
 			out, err := cmd.CombinedOutput()
 			p(err)
 			fmt.Printf("%s\n", out)
+			time.Sleep(5 * time.Second)
 		}
 	}
 	os.WriteFile(last_file, []byte(strconv.FormatInt(time.Now().Unix(), 10)), 0600)
