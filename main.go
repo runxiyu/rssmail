@@ -61,8 +61,8 @@ func main() {
 		case 1:
 			msg := fmt.Sprintf("To: %s\r\nSubject: %s\r\nFrom: %s\r\n\r\nLink: %s\nTime: %s\n\n%s", to_address, title, from_address, link, t, text)
 			fmt.Printf("sending %s\n", t)
-			// cmd := exec.Command("/sbin/sendmail", "-i", "--", to_address)
-			cmd := exec.Command("msmtp", "-v", "-a", "runxiyu", "-i", "--", to_address)
+			cmd := exec.Command("/sbin/sendmail", "-i", "--", to_address)
+			// cmd := exec.Command("msmtp", "-v", "-a", "runxiyu", "-i", "--", to_address)
 			stdin, err := cmd.StdinPipe()
 			p(err)
 			io.WriteString(stdin, msg)
