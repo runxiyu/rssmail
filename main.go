@@ -40,6 +40,10 @@ func main() {
 	last_time := time.Unix(last_int64, 0)
 	fp := gofeed.NewParser()
 	feed, _ := fp.ParseURL(rss_url)
+	if feed.Items == nil {
+		fmt.Fprintf(os.Stderr, "no feed items???\n")
+		return
+	}
 	for i := len(feed.Items) - 1; i >= 0; i-- {
 		item := feed.Items[i]
 		title := html2text.HTML2Text(item.Title)
