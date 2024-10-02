@@ -31,8 +31,7 @@ func main() {
 	to_address := os.Args[2]
 	last_file := os.Args[3]
 	from_address := os.Args[4]
-	var default_title string
-	default_title = os.Args[5]
+	default_title := os.Args[5]
 
 	last_bytes, err := os.ReadFile(last_file)
 	p(err)
@@ -64,7 +63,8 @@ func main() {
 			cmd := exec.Command("/sbin/sendmail", "-i", "--", to_address)
 			stdin, err := cmd.StdinPipe()
 			p(err)
-			io.WriteString(stdin, msg)
+			_, err = io.WriteString(stdin, msg)
+			p(err)
 			stdin.Close()
 			out, err := cmd.CombinedOutput()
 			p(err)
@@ -72,5 +72,6 @@ func main() {
 			time.Sleep(5 * time.Second)
 		}
 	}
-	os.WriteFile(last_file, []byte(strconv.FormatInt(time.Now().Unix(), 10)), 0600)
+	err = os.WriteFile(last_file, []byte(strconv.FormatInt(time.Now().Unix(), 10)), 0o600)
+	p(err)
 }
